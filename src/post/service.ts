@@ -49,10 +49,12 @@ export class PostService {
             //执行python，不过设备数据要重新数组化，可以优化
             //轮询逻辑，可以新增轮询接口来优化
             (PostService.status !== ApiStatus.process 
-                && PostService.status !== ApiStatus.success) 
+                && PostService.status !== ApiStatus.success
+                && PostService.status !== ApiStatus.error) 
                 && this.change_assets_user(Post.deviceName, Post.username)
             // if (result == 'success') {
             if (PostService.status === ApiStatus.success) {
+                PostService.status = ApiStatus.wait
                 return {
                     message: "修改成功",
                     data: {
@@ -75,12 +77,16 @@ export class PostService {
                     }
                 }
             } else {
+                PostService.status = ApiStatus.wait
                 return {
                     message: "修改失败",
-                    data: null
+                    data: {
+                        finish: true
+                    }
                 }
             }
         } catch (error) {
+            PostService.status = ApiStatus.wait
             return {
                 message: error,
                 data: null
@@ -105,7 +111,7 @@ export class PostService {
         // } catch (error) {
         //     return error.toString()
         // }
-        exec(`${venvPython} && python ${pythonScript} ${arg1} ${arg2}`, (err, stdout, stderr) => {
+        const child = exec(`${venvPython} && python ${pythonScript} ${arg1} ${arg2}`, (err, stdout, stderr) => {
             if (err) {
                 PostService.status = ApiStatus.error
             }
@@ -114,7 +120,8 @@ export class PostService {
             }
             if (stdout) {
                 PostService.status = ApiStatus.process
-                if (stdout === "success") PostService.status = ApiStatus.success
+                if (stdout === "success") (PostService.status = ApiStatus.success)
+                if (stdout === "error") (PostService.status = ApiStatus.error)
             }
         })
     }

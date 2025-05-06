@@ -14,6 +14,7 @@ export class LoginController {
     @PostMapping("/user")
     public async login(req: Request, res: Response) {
         let user = req.body
+        if (!user.username) return null
         try {
             // 使用私钥解密
             const decrypted = crypto.privateDecrypt(
