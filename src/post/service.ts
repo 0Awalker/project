@@ -12,6 +12,7 @@ const fs = require('fs')
 const moment = require('moment-timezone')
 
 const python_path = path.join(__dirname, "../../", "../../../", "PycharmProjects", "pythonProject1")
+// const python_path = path.join(__dirname, "../../", "../", "PythonScripts", "change_sdp_user")
 @injectable()
 export class PostService {
     constructor(@inject(PrismaDB) private readonly PrismaDB: PrismaDB) { }
