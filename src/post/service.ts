@@ -21,6 +21,7 @@ export class PostService {
 
     public async update(Post: any) {
         try {
+            //复数设备
             let device = null
             if (Post.deviceName.indexOf(";") > 0) {
                 device = Post.deviceName.split(";")
@@ -30,6 +31,9 @@ export class PostService {
             } else {
                 device = [Post.deviceName]
             }
+            //用户名格式判断
+            const regx = /^[A-Za-z]+[ .][A-Za-z]+$/
+            if (!regx.test(Post.username)) return {message: "用户名格式不正确", data: null}
             for (const i of device) {
                 let result_assets = await this.get_search_list(i) as any
                 if (result_assets.list_info.row_count === 0) {
