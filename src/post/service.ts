@@ -32,8 +32,8 @@ export class PostService {
                 device = [Post.deviceName]
             }
             //用户名格式判断
-            const regx = /^[A-Za-z]+[ .][A-Za-z]+$/
-            if (!regx.test(Post.username)) return {message: "用户名格式不正确", data: null}
+            const regx = /(^\s+|\s+$)/
+            if (regx.test(Post.username)) return {message: "用户名格式不正确", data: null}
             for (const i of device) {
                 let result_assets = await this.get_search_list(i) as any
                 if (result_assets.list_info.row_count === 0) {
@@ -105,8 +105,7 @@ export class PostService {
     public change_assets_user(assets: any, user_info: any) {
         PostService.status = ApiStatus.process
         const { execSync, exec } = require('child_process')
-
-        const arg1 = `${user_info.indexOf(".") > 0 ? user_info.replace(".", " ") : user_info}`
+        const arg1 = `${user_info.indexOf(" ") > 0 ? user_info.replace(" ", ".") : user_info}`
         const arg2 = assets
         const venvPython = path.join(python_path, '.venv', 'Scripts', 'activate');
         const pythonScript = path.join(python_path, 'src', 'SDP_AUTO.py');
