@@ -298,7 +298,7 @@ export class PostService {
             const docx_name = `${user}-${Date.now()}.docx`
             const file_name = `${process.env.DOCX_PATH}/template-docx/${docx_name}`
             await this.template_create(Post, user, file_name, remark)
-            Post.forEach(async i => {
+            for (const i of Post) {
                 const post = plainToClass(PostDto, i)
                 const errors = await validate(post)
                 if (errors.length) {
@@ -309,6 +309,7 @@ export class PostService {
                             })
                         })
                     })
+                    throw Error()
                 } else {
                     const postInfo = await this.PrismaDB.prisma.records.create({
                         data: {
@@ -319,7 +320,7 @@ export class PostService {
                         }
                     })
                 }
-            })
+            }
             return {
                 data: {
                     Post,
