@@ -1,11 +1,11 @@
 import { IsNotEmpty } from 'class-validator'
 import { Transform } from 'class-transformer'
 export class PostDto {
-    @IsNotEmpty({message: "设备类型不能为空"})
+    // @IsNotEmpty({message: "设备类型不能为空"})
     @Transform(post => {if(post.value) return post.value.trim()})
     type: string
     
-    @IsNotEmpty({message: "设备名称不能为空"})
+    // @IsNotEmpty({message: "设备名称不能为空"})
     @Transform(post => {if(post.value) return post.value.trim()})
     deviceName: string
 
