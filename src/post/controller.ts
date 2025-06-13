@@ -24,6 +24,16 @@ export class PostController {
         res.json(result)
     }
 
+    @PostMapping("/user", JWT.middleware())
+    public async getUserList(req: Request, res: Response) {
+        let data = req.body
+        let result = await this.PostService.get_user_list({
+            username: data.username,
+            deviceName: null
+        })
+        res.json(result)
+    }
+
     @PostMapping("/device", JWT.middleware())
     public async device(req: Request, res: Response) {
         let data = req.body
