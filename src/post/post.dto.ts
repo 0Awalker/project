@@ -29,3 +29,10 @@ export class TypeDto {
     @Transform(post => {if(post.value) return post.value.trim()})
     value: string
 }
+
+export class ImportDto {
+    @IsNotEmpty({message: ""})
+    file: Express.Multer.File[]
+    
+    option: Array<any>
+}
