@@ -114,11 +114,11 @@ export class PostController {
         }
         buffers.length = 0
         staff_buffers.length = 0
-        // res.download(file_path)
-        res.json({
-            message: "成功",
-            file_path
-        })
+        res.download(file_path)
+        // res.json({
+        //     message: "成功",
+        //     file_path
+        // })
     }
     @PostMapping("/import1", JWT.middleware())
     public async import1(req: Request, res: Response) {

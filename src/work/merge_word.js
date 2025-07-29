@@ -130,12 +130,13 @@ async function processTaskData(
                 // 生成账户信息
                 if (isAccountAndPwd) {
                     await service.staff_template_create({
-                        email: curRowValue.email,
+                        email: curRowValue.email ? curRowValue.email : result_users?.user[0]?.email_id,
                         password: curRowValue.password
                     });
                 }
             }
         } catch (error) {
+            console.log(error)
         }
 
         // 准备结果（复制缓冲区）
